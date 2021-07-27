@@ -1,4 +1,5 @@
 <!doctype html>
+
 <body>
     <canvas id="gameCanvas" width="600" height="600"></canvas>
     <script>
@@ -10,17 +11,29 @@
 
             setInterval(mainloop, 1000 / 50);
         }
-        
-        
+        var playerXpos = 0;
+        var playerYpos = 0;
+        var playerXspeed = 5;
+        var playerYspeed = 4;
+        const PLAYER_SIZE = 20;
+
+
         function mainloop() {
-            colorRect(0,0,canvas.width,canvas.height,'black'); // bg
-  
+            colorRect(0, 0, canvas.width, canvas.height, 'black'); //bg
+            colorRect(playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE, 'red'); //player
+            
+            playerMove();
+        }
+
+        function colorRect(x, y, w, h, c) {
+            canvasContext.fillStyle = c;
+            canvasContext.fillRect(x, y, w, h);
         }
         
-         function colorRect(x,y,w,h,c){
-            canvasContext.fillStyle = c;
-            canvasContext.fillRect(x,y,w,h);
+        function playerMove() {
+            playerXpos += playerXspeed;
+            playerYpos += playerYspeed;
         }
-    
+
     </script>
 </body>
