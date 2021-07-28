@@ -9,6 +9,9 @@
             canvas = document.getElementById('gameCanvas');
             canvasContext = canvas.getContext('2d');
 
+            document.addEventListener('keydown', keyPressed)
+            document.addEventListener('keyup', keyReleased)
+
             setInterval(mainloop, 1000 / 50);
         }
         var playerXpos = 0;
@@ -17,22 +20,75 @@
         var playerYspeed = 4;
         const PLAYER_SIZE = 20;
 
+        var AkeyPressed = false;
+        var DkeyPressed = false;
+        var SpacekeyPressed = false;
+        var WkeyPressed = false;
+
+        const A_KEY = 65;
+        const D_KEY = 68;
+        const SPACE_KEY = 32;
+        const W_KEY = 87;
+
+
 
         function mainloop() {
             colorRect(0, 0, canvas.width, canvas.height, 'black'); //bg
             colorRect(playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE, 'red'); //player
-            
+
             playerMove();
+        }
+
+        function keyPressed(evt) {
+            if (evt.keyCode == A_KEY) {
+                AkeyPressed = true;
+            }
+            if (evt.keyCode == D_KEY) {
+                DkeyPressed = true;
+            }
+            if (evt.keyCode == SPACE_KEY) {
+                SpacekeyPressed = true;
+            }
+            if (evt.keyCode == W_KEY) {
+                WkeyPressed = true;
+            }
+        }
+
+        function keyReleased(evt) {
+            if (evt.keyCode == A_KEY) {
+                AkeyPressed = false;
+            }
+            if (evt.keyCode == D_KEY) {
+                DkeyPressed = false;
+            }
+            if (evt.keyCode == SPACE_KEY) {
+                SpacekeyPressed = false;
+            }
+            if (evt.keyCode == W_KEY) {
+                WkeyPressed = false;
+            }
         }
 
         function colorRect(x, y, w, h, c) {
             canvasContext.fillStyle = c;
             canvasContext.fillRect(x, y, w, h);
         }
-        
+
         function playerMove() {
-            playerXpos += playerXspeed;
-            playerYpos += playerYspeed;
+            if (AkeyPressed) {
+                playerXpos -= playerXspeed;
+            }
+            if (DkeyPressed) {
+                playerXpos += playerXspeed;
+            }
+            if (SpacekeyPressed) {
+                playerYpos -= playerYspeed;
+            } else {
+                playerYpos += playerYspeed;
+            }
+            
+           
+           
         }
 
     </script>
