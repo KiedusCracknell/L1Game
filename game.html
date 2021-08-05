@@ -19,6 +19,12 @@
         var playerXspeed = 5;
         var playerYspeed = 4;
         const PLAYER_SIZE = 20;
+        
+        var enemyXpos = 0;
+        var enemyYpos = 0;
+        var enemyXspeed = 5;
+        var enemyYspeed = 4;
+        const ENEMY_SIZE = 20;
 
         var AkeyPressed = false;
         var DkeyPressed = false;
@@ -35,7 +41,7 @@
         function mainloop() {
             colorRect(0, 0, canvas.width, canvas.height, 'black'); //bg
             colorRect(playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE, 'blue'); //player
-            colorRect(0, 0, 20, 20, 'red'); //enemy
+            colorRect(enemyXpos, enemyYpos, ENEMY_SIZE, ENEMY_SIZE, 'red'); //enemy
 
             playerMove();
         }
