@@ -76,10 +76,10 @@
         }
 
         function playerMove() {
-            if (AkeyPressed) {
+            if (AkeyPressed && playerXpos > 0) {
                 playerXpos -= playerXspeed;
             }
-            if (DkeyPressed) {
+            if (DkeyPressed && playerXpos < canvas.width - PLAYER_SIZE) {
                 playerXpos += playerXspeed;
             }
             if (SpacekeyPressed) {
