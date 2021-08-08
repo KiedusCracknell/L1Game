@@ -14,6 +14,7 @@
 
             setInterval(mainloop, 1000 / 50);
         }
+        
         var playerXpos = 0;
         var playerYpos = 0;
         var playerXspeed = 5;
@@ -21,7 +22,7 @@
         const PLAYER_SIZE = 20;
         
         var enemyXpos = 0;
-        var enemyYpos = 0;
+        var enemyYpos = 5;
         var enemyXspeed = 5;
         var enemyYspeed = 4;
         const ENEMY_SIZE = 20;
@@ -44,6 +45,8 @@
             colorRect(enemyXpos, enemyYpos, ENEMY_SIZE, ENEMY_SIZE, 'red'); //enemy
 
             playerMove();
+            enemyMove();
+
         }
 
         function keyPressed(evt) {
@@ -96,6 +99,17 @@
             
            
            
+        }
+        
+        function enemyMove() {
+            enemyXpos += enemyXspeed;
+            
+            if(enemyXpos + ENEMY_SIZE > canvas.width){ // right edge bouce
+               enemyXspeed = enemyXspeed * -1;
+            }
+            if(enemyXpos < 0){ // left edge bouce
+               enemyXspeed = enemyXspeed * -1;
+            }
         }
 
     </script>
