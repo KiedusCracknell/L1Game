@@ -14,18 +14,12 @@
 
             setInterval(mainloop, 1000 / 50);
         }
-        
+
         var playerXpos = 0;
         var playerYpos = 0;
         var playerXspeed = 5;
         var playerYspeed = 4;
         const PLAYER_SIZE = 20;
-        
-        var enemyXpos = 0;
-        var enemyYpos = 5;
-        var enemyXspeed = 5;
-        var enemyYspeed = 4;
-        const ENEMY_SIZE = 20;
 
         var AkeyPressed = false;
         var DkeyPressed = false;
@@ -37,17 +31,68 @@
         const SPACE_KEY = 32;
         const W_KEY = 87;
 
+        var enemies = [];
+
+        var starting = true;
+
 
 
         function mainloop() {
             colorRect(0, 0, canvas.width, canvas.height, 'black'); //bg
             colorRect(playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE, 'blue'); //player
-            colorRect(enemyXpos, enemyYpos, ENEMY_SIZE, ENEMY_SIZE, 'red'); //enemy
 
             playerMove();
+            drawEnemy();
             enemyMove();
 
+            if (starting) {
+                for (var i = 0; i < 3; i++) {
+                    makeEnemy();
+                }
+                starting = false;
+            }
+
         }
+
+        function makeEnemy() {
+            const ENEMY_SIZE = 20;
+            var eXpos = Math.floor(Math.random()*(canvas.width - ENEMY_SIZE));
+            var eYpos = 5;
+            var eXspeed = 5;
+            var eYspeed = 4;
+            
+            var enemy = {
+                eXpos : eXpos,
+                eYpos : eYpos,
+                ENEMY_SIZE: ENEMY_SIZE,
+                eXspeed : eXspeed,
+                eYspeed : eYspeed
+            }
+            
+            enemies.push(enemy)
+
+        }
+        
+        function drawEnemy() {
+            enemies.forEach(function(e,i,array) {               
+                colorRect(e.eXpos, e.eYpos, e.ENEMY_SIZE, e.ENEMY_SIZE, 'red'); //enemy
+            });
+        }
+        
+        function enemyMove() {
+            enemies.forEach(function(e,i,array) {
+                
+            e.eXpos += e.eXspeed;
+
+                if (e.Xpos + e.ENEMY_SIZE > canvas.width) { // right edge bouce
+                    e.eXspeed *= -1;
+                }
+                if (e.eXpos < 0) { // left edge bouce
+                    e.eXspeed *= -1;
+                }
+            });
+        }
+                            
 
         function keyPressed(evt) {
             if (evt.keyCode == A_KEY) {
@@ -96,20 +141,9 @@
             } else {
                 playerYpos += playerYspeed;
             }
-            
-           
-           
-        }
-        
-        function enemyMove() {
-            enemyXpos += enemyXspeed;
-            
-            if(enemyXpos + ENEMY_SIZE > canvas.width){ // right edge bouce
-               enemyXspeed = enemyXspeed * -1;
-            }
-            if(enemyXpos < 0){ // left edge bouce
-               enemyXspeed = enemyXspeed * -1;
-            }
+
+
+
         }
 
     </script>
