@@ -5,7 +5,7 @@
     <script>
         var canvas, canvasContext;
 
-        window.onload = function() {
+        window.onload = function () {
             canvas = document.getElementById('gameCanvas');
             canvasContext = canvas.getContext('2d');
 
@@ -15,8 +15,8 @@
             setInterval(mainloop, 1000 / 50);
         }
 
-        var playerXpos = 0;
-        var playerYpos = 0;
+        var playerXpos = 300;
+        var playerYpos = 300;
         var playerXspeed = 5;
         var playerYspeed = 4;
         const PLAYER_SIZE = 20;
@@ -44,6 +44,7 @@
             playerMove();
             drawEnemy();
             enemyMove();
+            hit();
 
             if (starting) {
                 for (var i = 0; i < 3; i++) {
@@ -56,35 +57,35 @@
 
         function makeEnemy() {
             const ENEMY_SIZE = 20;
-            var eXpos = Math.floor(Math.random()*(canvas.width - ENEMY_SIZE));
+            var eXpos = Math.floor(Math.random() * (canvas.width - ENEMY_SIZE));
             var eYpos = 5;
             var eXspeed = 5;
             var eYspeed = 4;
-            
+
             var enemy = {
-                eXpos : eXpos,
-                eYpos : eYpos,
+                eXpos: eXpos,
+                eYpos: eYpos,
                 ENEMY_SIZE: ENEMY_SIZE,
-                eXspeed : eXspeed,
-                eYspeed : eYspeed
+                eXspeed: eXspeed,
+                eYspeed: eYspeed
             }
-            
+
             enemies.push(enemy)
 
         }
-        
+
         function drawEnemy() {
-            enemies.forEach(function(e,i,array) {               
+            enemies.forEach(function (e, i, array) {
                 colorRect(e.eXpos, e.eYpos, e.ENEMY_SIZE, e.ENEMY_SIZE, 'red'); //enemy
             });
         }
-        
-        function enemyMove() {
-            enemies.forEach(function(e,i,array) {
-                
-            e.eXpos += e.eXspeed;
 
-                if (e.Xpos + e.ENEMY_SIZE > canvas.width) { // right edge bouce
+        function enemyMove() {
+            enemies.forEach(function (e, i, array) {
+
+                e.eXpos += e.eXspeed;
+
+                if (e.eXpos + e.ENEMY_SIZE > canvas.width) { // right edge bouce
                     e.eXspeed *= -1;
                 }
                 if (e.eXpos < 0) { // left edge bouce
@@ -92,7 +93,7 @@
                 }
             });
         }
-                            
+
 
         function keyPressed(evt) {
             if (evt.keyCode == A_KEY) {
@@ -146,5 +147,14 @@
 
         }
 
+        function hit() {
+            enemies.forEach(function (e, i, array) {
+                if (e.eXpos + e.ENEMY_SIZE > playerXpos && e.eXpos < playerXpos + PLAYER_SIZE && e.eYpos + e
+                    .ENEMY_SIZE > playerYpos && e.eYpos < playerYpos + PLAYER_SIZE) {
+                        playerXpos = 300;
+                        playerYpos = 300;
+                };
+            });
+        }
     </script>
 </body>
