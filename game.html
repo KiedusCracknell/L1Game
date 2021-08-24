@@ -33,13 +33,16 @@
 
         var enemies = [];
 
+        var player = new Image();
+        player.src = 'sprites/player.png';
+
         var starting = true;
 
 
 
         function mainloop() {
             colorRect(0, 0, canvas.width, canvas.height, 'black'); //bg
-            colorRect(playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE, 'blue'); //player
+            drawImg(player, playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE); //player
 
             playerMove();
             drawEnemy();
@@ -130,6 +133,11 @@
             canvasContext.fillRect(x, y, w, h);
         }
 
+        function drawImg(src,x,y,w,h){
+            canvasContext.drawImage(src,x,y,w,h);
+        }
+        
+
         function playerMove() {
             if (AkeyPressed && playerXpos > 0) {
                 playerXpos -= playerXspeed;
@@ -151,8 +159,8 @@
             enemies.forEach(function (e, i, array) {
                 if (e.eXpos + e.ENEMY_SIZE > playerXpos && e.eXpos < playerXpos + PLAYER_SIZE && e.eYpos + e
                     .ENEMY_SIZE > playerYpos && e.eYpos < playerYpos + PLAYER_SIZE) {
-                        playerXpos = 300;
-                        playerYpos = 300;
+                        playerXpos = canvas.width/2;
+                        playerYpos = canvas.height/2;
                 };
             });
         }
