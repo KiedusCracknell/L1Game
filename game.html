@@ -15,11 +15,15 @@
             setInterval(mainloop, 1000 / 50);
         }
 
+        // player
+
         var playerXpos = 300;
         var playerYpos = 300;
         var playerXspeed = 5;
         var playerYspeed = 4;
         const PLAYER_SIZE = 40;
+
+        // keys
 
         var AkeyPressed = false;
         var DkeyPressed = false;
@@ -31,23 +35,26 @@
         const SPACE_KEY = 32;
         const W_KEY = 87;
 
-        var enemies = [];
+        var enemies = []; // enemy array
+        var bullets = []; // bullet array
 
+        // player sprite
         var player = new Image();
         player.src = 'sprites/player.png';
 
         var starting = true;
 
-
-
         function mainloop() {
             colorRect(0, 0, canvas.width, canvas.height, 'black'); //bg
-            drawImg(player, playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE*1.5); //player
+            drawImg(player, playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE * 1.5); //player
 
             playerMove();
             drawEnemy();
+            drawBullet();
+            bulletMove();
             enemyMove();
             hit();
+            playerShoot();
 
             if (starting) {
                 for (var i = 0; i < 3; i++) {
@@ -73,7 +80,7 @@
                 eYspeed: eYspeed
             }
 
-            enemies.push(enemy)
+            enemies.push(enemy) // pushes enemies into array with the vars/consts set
 
         }
 
@@ -81,7 +88,7 @@
             enemies.forEach(function (e, i, array) {
                 colorRect(e.eXpos, e.eYpos, e.ENEMY_SIZE, e.ENEMY_SIZE, 'red'); //enemy
             });
-        }
+        } // makes enemy a rectangle
 
         function enemyMove() {
             enemies.forEach(function (e, i, array) {
@@ -95,9 +102,9 @@
                     e.eXspeed *= -1;
                 }
             });
-        }
+        } // enemy movement
 
-
+        // keypress movement
         function keyPressed(evt) {
             if (evt.keyCode == A_KEY) {
                 AkeyPressed = true;
@@ -109,7 +116,7 @@
                 SpacekeyPressed = true;
             }
             if (evt.keyCode == W_KEY) {
-                WkeyPressed = true;
+                shooting = true;
             }
         }
 
@@ -123,21 +130,58 @@
             if (evt.keyCode == SPACE_KEY) {
                 SpacekeyPressed = false;
             }
-            if (evt.keyCode == W_KEY) {
-                WkeyPressed = false;
-            }
+            
         }
 
+        var shooting = false;
+        var shot = false;
+
+        function playerShoot() {
+            if (shooting && bullets.length < 3){
+                const BULLET_SIZE = 10;
+                var bXpos = playerXpos + PLAYER_SIZE / 2 - BULLET_SIZE / 2;
+                var bYpos = playerYpos;
+                var bYspeed = 20;
+
+                var bullet = {
+                bXpos: bXpos,
+                bYpos: bYpos,
+                BULLET_SIZE: BULLET_SIZE,
+                bYspeed: bYspeed
+                 }
+                 bullets.push(bullet); // pushes bullet into array with vars and consts set
+                 shooting = false;
+            }
+            bullets.forEach(function(b,i,array){
+                if(b.bYpos < 0){
+                    array.shift();
+                }
+            })
+        }
+
+        function drawBullet(){
+            bullets.forEach(function(b,i,array){
+                colorRect(b.bXpos,b.bYpos,b.BULLET_SIZE,b.BULLET_SIZE,'white')
+            });
+        }
+
+        function bulletMove(){
+            bullets.forEach(function(b,i,array){
+                b.bYpos -= b.bYspeed;
+            });
+        }
+
+        // draws rectangles
         function colorRect(x, y, w, h, c) {
             canvasContext.fillStyle = c;
             canvasContext.fillRect(x, y, w, h);
         }
-
-        function drawImg(src,x,y,w,h){
-            canvasContext.drawImage(src,x,y,w,h);
+        // draws images
+        function drawImg(src, x, y, w, h) {
+            canvasContext.drawImage(src, x, y, w, h);
         }
-        
 
+        // player movement
         function playerMove() {
             if (AkeyPressed && playerXpos > 0) {
                 playerXpos -= playerXspeed;
@@ -154,13 +198,13 @@
 
 
         }
-
+        // player vs enemy hit detection
         function hit() {
             enemies.forEach(function (e, i, array) {
                 if (e.eXpos + e.ENEMY_SIZE > playerXpos && e.eXpos < playerXpos + PLAYER_SIZE && e.eYpos + e
                     .ENEMY_SIZE > playerYpos && e.eYpos < playerYpos + PLAYER_SIZE) {
-                        playerXpos = canvas.width/2;
-                        playerYpos = canvas.height/2;
+                    playerXpos = canvas.width / 2;
+                    playerYpos = canvas.height / 2;
                 };
             });
         }
