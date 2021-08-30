@@ -130,6 +130,7 @@
             if (evt.keyCode == SPACE_KEY) {
                 SpacekeyPressed = false;
             }
+            
         }
 
         var shooting = false;
@@ -151,6 +152,11 @@
                  bullets.push(bullet); // pushes bullet into array with vars and consts set
                  shooting = false;
             }
+            bullets.forEach(function(b,i,array){
+                if(b.bYpos < 0){
+                    array.shift();
+                }
+            })
         }
 
         function drawBullet(){
