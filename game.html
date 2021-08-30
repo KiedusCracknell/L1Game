@@ -35,14 +35,8 @@
         const SPACE_KEY = 32;
         const W_KEY = 87;
 
-        // bullet
-
-        var bulletXpos = 0;
-        var bulletYpos = 0;
-        var bulletYspeed = 10;
-        const BULLET_SIZE = 7;
-
         var enemies = []; // enemy array
+        var bullets = []; // bullet array
 
         // player sprite
         var player = new Image();
@@ -52,7 +46,6 @@
 
         function mainloop() {
             colorRect(0, 0, canvas.width, canvas.height, 'black'); //bg
-            colorRect(bulletXpos, bulletYpos, BULLET_SIZE, BULLET_SIZE, 'white')
             drawImg(player, playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE * 1.5); //player
 
             playerMove();
@@ -141,6 +134,21 @@
         var shot = false;
 
         function playerShoot() {
+            if (shooting && bullets.length < 3){
+                const BULLET_SIZE = 10;
+                var bXpos = playerXpos + PLAYER_SIZE / 2 - BULLET_SIZE / 2;
+                var bYpos = playerYpos;
+                var bYspeed = 20;
+
+                var bullet = {
+                bXpos: bXpos,
+                bYpos: bYpos,
+                BULLET_SIZE: BULLET_SIZE,
+                bYspeed: bYspeed
+                 }
+                 bullets.push(bullet); // pushes bullet into array with vars and consts set
+            }
+            /*
             if (shooting && shot == false) {
                 bulletXpos = playerXpos + PLAYER_SIZE / 2 - BULLET_SIZE / 2; // X center of player
                 bulletYpos = playerYpos;
@@ -156,7 +164,8 @@
             if(shooting == false && shot == false){
                 bulletXpos = -10;
                 bulletYpos = -10;
-            }
+            } 
+            */
         }
 
         // draws rectangles
