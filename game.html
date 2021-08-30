@@ -50,6 +50,7 @@
 
             playerMove();
             drawEnemy();
+            drawBullet();
             enemyMove();
             hit();
             playerShoot();
@@ -147,25 +148,14 @@
                 bYspeed: bYspeed
                  }
                  bullets.push(bullet); // pushes bullet into array with vars and consts set
+                 shooting = false;
             }
-            /*
-            if (shooting && shot == false) {
-                bulletXpos = playerXpos + PLAYER_SIZE / 2 - BULLET_SIZE / 2; // X center of player
-                bulletYpos = playerYpos;
-                shot = true;
-            }
-            if(shooting && shot){
-                bulletYpos -= bulletYspeed; // bullet travels upwards
-            }
-            if(bulletYpos < 0){
-                shooting = false;
-                shot = false;
-            }
-            if(shooting == false && shot == false){
-                bulletXpos = -10;
-                bulletYpos = -10;
-            } 
-            */
+        }
+
+        function drawBullet(){
+            bullets.forEach(function(b,i,array){
+                colorRect(b.bXpos,b.bYpos,b.BULLET_SIZE,b.BULLET_SIZE,'white')
+            });
         }
 
         // draws rectangles
