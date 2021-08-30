@@ -51,6 +51,7 @@
             playerMove();
             drawEnemy();
             drawBullet();
+            bulletMove();
             enemyMove();
             hit();
             playerShoot();
@@ -155,6 +156,12 @@
         function drawBullet(){
             bullets.forEach(function(b,i,array){
                 colorRect(b.bXpos,b.bYpos,b.BULLET_SIZE,b.BULLET_SIZE,'white')
+            });
+        }
+
+        function bulletMove(){
+            bullets.forEach(function(b,i,array){
+                b.bYpos -= b.bYspeed;
             });
         }
 
