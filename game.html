@@ -5,7 +5,7 @@
     <script>
         var canvas, canvasContext;
 
-        window.onload = function () {
+        window.onload = function() {
             canvas = document.getElementById('gameCanvas');
             canvasContext = canvas.getContext('2d');
 
@@ -85,13 +85,13 @@
         }
 
         function drawEnemy() {
-            enemies.forEach(function (e, i, array) {
+            enemies.forEach(function(e, i, array) {
                 colorRect(e.eXpos, e.eYpos, e.ENEMY_SIZE, e.ENEMY_SIZE, 'red'); //enemy
             });
         } // makes enemy a rectangle
 
         function enemyMove() {
-            enemies.forEach(function (e, i, array) {
+            enemies.forEach(function(e, i, array) {
 
                 e.eXpos += e.eXspeed;
 
@@ -101,6 +101,14 @@
                 if (e.eXpos < 0) { // left edge bouce
                     e.eXspeed *= -1;
                 }
+                
+                bullets.forEach(function(b,i,array){
+//                    
+                    if(b.bYpos + b.BULLET_SIZE < 0){
+                       delete enemies[i];
+                    }
+                });
+                bullets = bullets.filter(item => item !== undefined);
             });
         } // enemy movement
 
@@ -130,44 +138,57 @@
             if (evt.keyCode == SPACE_KEY) {
                 SpacekeyPressed = false;
             }
-            
+
         }
 
         var shooting = false;
-        var shot = false;
 
         function playerShoot() {
-            if (shooting && bullets.length < 3){
+            if (shooting && bullets.length < 3) {
                 const BULLET_SIZE = 10;
                 var bXpos = playerXpos + PLAYER_SIZE / 2 - BULLET_SIZE / 2;
                 var bYpos = playerYpos;
                 var bYspeed = 20;
 
                 var bullet = {
-                bXpos: bXpos,
-                bYpos: bYpos,
-                BULLET_SIZE: BULLET_SIZE,
-                bYspeed: bYspeed
-                 }
-                 bullets.push(bullet); // pushes bullet into array with vars and consts set
-                 shooting = false;
-            }
-            bullets.forEach(function(b,i,array){
-                if(b.bYpos < 0){
-                    array.shift();
+                    bXpos: bXpos,
+                    bYpos: bYpos,
+                    BULLET_SIZE: BULLET_SIZE,
+                    bYspeed: bYspeed
                 }
-            })
+                bullets.push(bullet); // pushes bullet into array with vars and consts set
+                shooting = false;
+            }
+//            bullets.forEach(function(b, i, array) {
+//                if (b.bYpos < 0) {
+//                    array.shift();
+//                }
+//            })
         }
 
-        function drawBullet(){
-            bullets.forEach(function(b,i,array){
-                colorRect(b.bXpos,b.bYpos,b.BULLET_SIZE,b.BULLET_SIZE,'white')
+        function drawBullet() {
+            bullets.forEach(function(b, i, array) {
+                colorRect(b.bXpos, b.bYpos, b.BULLET_SIZE, b.BULLET_SIZE, 'white')
             });
         }
 
-        function bulletMove(){
-            bullets.forEach(function(b,i,array){
+        function bulletMove() {
+            bullets.forEach(function(b, i, array) {
                 b.bYpos -= b.bYspeed;
+                
+                if(b.bYpos < 0){
+                    delete bullets[i];
+                }
+                enemies.forEach(function(e,i,array){
+                    
+                    if(b.bXpos + b.BULLET_SIZE > e.eXpos && b.bXpos < e.eXpos + e.ENEMY_SIZE && b.bYpos < e.eYpos + e.ENEMY_SIZE && b.bYpos + b.BULLET_SIZE > e.eYpos){
+                        delete enemies[i];
+                        delete bullets[i];
+                        console.log('delete');
+                    }
+                
+                });
+                bullets = bullets.filter(item => item !== undefined);
             });
         }
 
@@ -200,13 +221,16 @@
         }
         // player vs enemy hit detection
         function hit() {
-            enemies.forEach(function (e, i, array) {
+            enemies.forEach(function(e, i, array) {
                 if (e.eXpos + e.ENEMY_SIZE > playerXpos && e.eXpos < playerXpos + PLAYER_SIZE && e.eYpos + e
                     .ENEMY_SIZE > playerYpos && e.eYpos < playerYpos + PLAYER_SIZE) {
                     playerXpos = canvas.width / 2;
                     playerYpos = canvas.height / 2;
                 };
+                
+                
             });
         }
+
     </script>
 </body>
