@@ -37,6 +37,7 @@
 
         var enemies = []; // enemy array
         var bullets = []; // bullet array
+        var eBullets = []; // enemy bullets
 
         // player sprite
         var player = new Image();
@@ -55,6 +56,8 @@
             enemyMove();
             hit();
             playerShoot();
+            drawEBullet();
+            eBulletMove();
 
             if (starting) {
                 for (var i = 0; i < 3; i++) {
@@ -101,11 +104,11 @@
                 if (e.eXpos < 0) { // left edge bouce
                     e.eXspeed *= -1;
                 }
-                
-                bullets.forEach(function(b,i,array){
-//                    
-                    if(b.bYpos + b.BULLET_SIZE < 0){
-                       delete enemies[i];
+
+                bullets.forEach(function(b, i, array) {
+                    //                    
+                    if (b.bYpos + b.BULLET_SIZE < 0) {
+                        delete enemies[i];
                     }
                 });
                 bullets = bullets.filter(item => item !== undefined);
@@ -143,6 +146,36 @@
 
         var shooting = false;
 
+        setInterval(function enemyShoot() {
+            enemies.forEach(function(e, i, array) {
+                const eBULLET_SIZE = 10;
+                var ebXpos = e.eXpos + e.ENEMY_SIZE / 2 - eBULLET_SIZE / 2;
+                var ebYpos = e.eYpos;
+                var ebYspeed = 20;
+
+                var ebullet = {
+                    ebXpos: ebXpos,
+                    ebYpos: ebYpos,
+                    eBULLET_SIZE: eBULLET_SIZE,
+                    ebYspeed: ebYspeed
+                }
+                eBullets.push(ebullet);
+            })
+
+        }, 3000)
+
+        function drawEBullet() {
+            eBullets.forEach(function(b, i, array) {
+                colorRect(b.ebXpos, b.ebYpos, b.eBULLET_SIZE, b.eBULLET_SIZE, 'red')
+            });
+        }
+        
+        function eBulletMove() {
+            eBullets.forEach(function(b,i,array){
+                b.ebYpos += b.ebYspeed;
+            })
+        }
+
         function playerShoot() {
             if (shooting && bullets.length < 3) {
                 const BULLET_SIZE = 10;
@@ -159,11 +192,6 @@
                 bullets.push(bullet); // pushes bullet into array with vars and consts set
                 shooting = false;
             }
-//            bullets.forEach(function(b, i, array) {
-//                if (b.bYpos < 0) {
-//                    array.shift();
-//                }
-//            })
         }
 
         function drawBullet() {
@@ -175,18 +203,18 @@
         function bulletMove() {
             bullets.forEach(function(b, i, array) {
                 b.bYpos -= b.bYspeed;
-                
-                if(b.bYpos < 0){
+
+                if (b.bYpos < 0) {
                     delete bullets[i];
                 }
-                enemies.forEach(function(e,i,array){
-                    
-                    if(b.bXpos + b.BULLET_SIZE > e.eXpos && b.bXpos < e.eXpos + e.ENEMY_SIZE && b.bYpos < e.eYpos + e.ENEMY_SIZE && b.bYpos + b.BULLET_SIZE > e.eYpos){
+                enemies.forEach(function(e, i, array) {
+
+                    if (b.bXpos + b.BULLET_SIZE > e.eXpos && b.bXpos < e.eXpos + e.ENEMY_SIZE && b.bYpos < e.eYpos + e.ENEMY_SIZE && b.bYpos + b.BULLET_SIZE > e.eYpos) {
                         delete enemies[i];
                         delete bullets[i];
                         console.log('delete');
                     }
-                
+
                 });
                 bullets = bullets.filter(item => item !== undefined);
             });
@@ -227,8 +255,8 @@
                     playerXpos = canvas.width / 2;
                     playerYpos = canvas.height / 2;
                 };
-                
-                
+
+
             });
         }
 
