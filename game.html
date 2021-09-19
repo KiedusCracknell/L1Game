@@ -46,6 +46,8 @@
         var starting = true;
 
         function mainloop() {
+            document.getElementById('lives').innerHTML = "Lives: " + life;
+            
             colorRect(0, 0, canvas.width, canvas.height, 'black'); //bg
             drawImg(player, playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE * 1.5); //player
 
@@ -162,7 +164,7 @@
                 eBullets.push(ebullet);
             })
 
-        }, 300)
+        }, 1000)
 
         function drawEBullet() {
             eBullets.forEach(function(b, i, array) {
@@ -258,6 +260,7 @@
                     .ENEMY_SIZE > playerYpos && e.eYpos < playerYpos + PLAYER_SIZE) {
                     playerXpos = canvas.width / 2;
                     playerYpos = canvas.height / 2;
+                    life -= 1;
                 };
 
 
@@ -266,9 +269,16 @@
                 if (b.ebXpos + b.eBULLET_SIZE > playerXpos && b.ebXpos < playerXpos + PLAYER_SIZE && b.ebYpos + b.eBULLET_SIZE > playerYpos && b.ebYpos < playerYpos + PLAYER_SIZE) {
                     playerXpos = canvas.width / 2;
                     playerYpos = canvas.height / 2;
+                    life -= 1;
                 }
             })
         }
+        
+        var life = 3;
 
     </script>
+    
+    <p id="lives">
+    Lives:
+    </p>
 </body>
