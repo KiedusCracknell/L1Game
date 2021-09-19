@@ -47,6 +47,11 @@
 
         function mainloop() {
             document.getElementById('lives').innerHTML = "Lives: " + life;
+            if(life < 1){
+                alert("you failed lol u succ haha ahahh"); 
+                location.reload();
+                life = 3;
+            }
             
             colorRect(0, 0, canvas.width, canvas.height, 'black'); //bg
             drawImg(player, playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE * 1.5); //player
@@ -260,7 +265,7 @@
                     .ENEMY_SIZE > playerYpos && e.eYpos < playerYpos + PLAYER_SIZE) {
                     playerXpos = canvas.width / 2;
                     playerYpos = canvas.height / 2;
-                    life -= 1;
+                    life -= 1; 
                 };
 
 
