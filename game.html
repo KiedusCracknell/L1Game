@@ -24,6 +24,7 @@
         const PLAYER_SIZE = 40;
         var life = 3;
         var userName = '';
+        var difficulty = '';
         
 
         // keys
@@ -80,6 +81,13 @@
         
         while(userName == '' || userName == null){
             userName = prompt('whats your name??????????')
+        }
+        pass = false;
+        while(pass == false){
+            difficulty = prompt('easy, medium or hard?', 'easy');
+            if(difficulty == 'easy' || difficulty == 'medium' || difficulty == 'hard'){
+                pass = true;
+            }
         }
 
         function makeEnemy() {
