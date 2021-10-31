@@ -22,6 +22,9 @@
         var playerXspeed = 5;
         var playerYspeed = 4;
         const PLAYER_SIZE = 40;
+        var life = 3;
+        var userName = '';
+        
 
         // keys
 
@@ -73,6 +76,10 @@
                 starting = false;
             }
 
+        } // end func
+        
+        while(userName == '' || userName == null){
+            userName = prompt('whats your name??????????')
         }
 
         function makeEnemy() {
@@ -92,13 +99,14 @@
 
             enemies.push(enemy) // pushes enemies into array with the vars/consts set
 
-        }
+        } // end func
 
         function drawEnemy() {
             enemies.forEach(function(e, i, array) {
                 colorRect(e.eXpos, e.eYpos, e.ENEMY_SIZE, e.ENEMY_SIZE, 'red'); //enemy
             });
-        } // makes enemy a rectangle
+        } // end func. makes enemy a rectangle
+        
 
         function enemyMove() {
             enemies.forEach(function(e, i, array) {
@@ -120,7 +128,7 @@
                 });
                 bullets = bullets.filter(item => item !== undefined);
             });
-        } // enemy movement
+        } // end func. enemy movement
 
         // keypress movement
         function keyPressed(evt) {
@@ -136,7 +144,7 @@
             if (evt.keyCode == W_KEY) {
                 shooting = true;
             }
-        }
+        } // end func.
 
         function keyReleased(evt) {
             if (evt.keyCode == A_KEY) {
@@ -149,7 +157,7 @@
                 SpacekeyPressed = false;
             }
 
-        }
+        } // end func.
 
         var shooting = false;
 
@@ -167,9 +175,9 @@
                     ebYspeed: ebYspeed
                 }
                 eBullets.push(ebullet);
-            })
+            }) // end forEach.
 
-        }, 1000)
+        }, 1000) // runs forEach every 1 second
 
         function drawEBullet() {
             eBullets.forEach(function(b, i, array) {
@@ -279,7 +287,6 @@
             })
         }
         
-        var life = 3;
 
     </script>
     
