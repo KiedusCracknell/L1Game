@@ -42,6 +42,7 @@
         var enemies = []; // enemy array
         var bullets = []; // bullet array
         var eBullets = []; // enemy bullets
+        var ShootSpeed = '';
 
         // player sprite
         var player = new Image();
@@ -85,9 +86,18 @@
         pass = false;
         while(pass == false){
             difficulty = prompt('easy, medium or hard?', 'easy');
+            difficulty = difficulty.toLowerCase()
             if(difficulty == 'easy' || difficulty == 'medium' || difficulty == 'hard'){
                 pass = true;
             }
+        }
+        
+        if(difficulty == 'easy'){
+            var ShootSpeed = 1000; 
+        } else if(difficulty == 'medium'){
+            var ShootSpeed = 500;
+        } else{
+            var ShootSpeed = 250;
         }
 
         function makeEnemy() {
@@ -185,7 +195,7 @@
                 eBullets.push(ebullet);
             }) // end forEach.
 
-        }, 1000) // runs forEach every 1 second
+        }, ShootSpeed) // runs forEach every 1 second
 
         function drawEBullet() {
             eBullets.forEach(function(b, i, array) {
