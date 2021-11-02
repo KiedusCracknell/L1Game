@@ -1,7 +1,7 @@
 <!doctype html>
 
 <body>
-    <canvas id="gameCanvas" width="600" height="600"></canvas>
+    <canvas id='gameCanvas' width='600' height='600'></canvas>
     <script>
         var canvas, canvasContext;
 
@@ -24,6 +24,8 @@
         const PLAYER_SIZE = 40;
         var life = 3;
         var userName = '';
+        var difficulty = '';
+        var score = 0;
         
 
         // keys
@@ -41,6 +43,7 @@
         var enemies = []; // enemy array
         var bullets = []; // bullet array
         var eBullets = []; // enemy bullets
+        var ShootSpeed = '';
 
         // player sprite
         var player = new Image();
@@ -49,9 +52,10 @@
         var starting = true;
 
         function mainloop() {
-            document.getElementById('lives').innerHTML = "Lives: " + life;
+            document.getElementById('points').innerHTML = 'Score: ' + score;
+            document.getElementById('lives').innerHTML = 'Lives: ' + life;
             if(life < 1){
-                alert("you failed lol u succ haha ahahh"); 
+                alert('lol '+ userName + ' you succ hahahhahahha get gud'); 
                 location.reload();
                 life = 3;
             }
@@ -81,6 +85,23 @@
         while(userName == '' || userName == null){
             userName = prompt('whats your name??????????')
         }
+        pass = false;
+        while(pass == false){
+            difficulty = prompt('easy, medium or hard?', 'easy');
+            difficulty = difficulty.toLowerCase()
+            if(difficulty == 'easy' || difficulty == 'medium' || difficulty == 'hard'){
+                pass = true;
+            }
+        }
+        
+        if(difficulty == 'easy'){
+            var ShootSpeed = 1000; 
+        } else if(difficulty == 'medium'){
+            var ShootSpeed = 500;
+        } else{
+            var ShootSpeed = 250;
+        }
+        
 
         function makeEnemy() {
             const ENEMY_SIZE = 20;
@@ -177,7 +198,7 @@
                 eBullets.push(ebullet);
             }) // end forEach.
 
-        }, 1000) // runs forEach every 1 second
+        }, ShootSpeed) // runs forEach every 1 second
 
         function drawEBullet() {
             eBullets.forEach(function(b, i, array) {
@@ -232,6 +253,7 @@
                         delete enemies[i];
                         delete bullets[i];
                         console.log('delete');
+                        score += 1;
                     }
 
                 });
@@ -290,7 +312,10 @@
 
     </script>
     
-    <p id="lives">
+    <p id='lives'>
     Lives:
+    </p>
+    <p id='points'>
+    Score: 
     </p>
 </body>
