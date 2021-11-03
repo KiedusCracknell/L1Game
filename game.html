@@ -72,8 +72,11 @@
             playerShoot();
             drawEBullet();
             eBulletMove();
+            nextStage();
 
             if (starting) {
+                playerYpos = canvas.height / 2;
+                playerXpos = canvas.width / 2;
                 for (var i = 0; i < 3; i++) {
                     makeEnemy();
                 }
@@ -100,6 +103,13 @@
             var ShootSpeed = 500;
         } else {
             var ShootSpeed = 250;
+        }
+
+        function nextStage() {
+            if (enemies.length < 1 && playerYpos < 0) {
+                console.log('asefae')
+                starting = true;
+            }
         }
 
 
@@ -258,6 +268,7 @@
 
                 });
                 bullets = bullets.filter(item => item !== undefined);
+                enemies = enemies.filter(item => item !== undefined);
             });
         }
 
@@ -281,7 +292,7 @@
             }
             if (SpacekeyPressed) {
                 playerYpos -= playerYspeed;
-            } else if(playerYpos < canvas.height - PLAYER_SIZE){
+            } else if (playerYpos < canvas.height - PLAYER_SIZE) {
                 playerYpos += playerYspeed;
             }
 
