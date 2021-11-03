@@ -26,7 +26,7 @@
         var userName = '';
         var difficulty = '';
         var score = 0;
-        
+
 
         // keys
 
@@ -54,12 +54,12 @@
         function mainloop() {
             document.getElementById('points').innerHTML = 'Score: ' + score;
             document.getElementById('lives').innerHTML = 'Lives: ' + life;
-            if(life < 1){
-                alert('lol '+ userName + ' you succ hahahhahahha get gud'); 
+            if (life < 1) {
+                alert('lol ' + userName + ' you succ hahahhahahha get gud. your score was ' + score);
                 location.reload();
                 life = 3;
             }
-            
+
             colorRect(0, 0, canvas.width, canvas.height, 'black'); //bg
             drawImg(player, playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE * 1.5); //player
 
@@ -81,27 +81,27 @@
             }
 
         } // end func
-        
-        while(userName == '' || userName == null){
+
+        while (userName == '' || userName == null) {
             userName = prompt('whats your name??????????')
         }
         pass = false;
-        while(pass == false){
+        while (pass == false) {
             difficulty = prompt('easy, medium or hard?', 'easy');
             difficulty = difficulty.toLowerCase()
-            if(difficulty == 'easy' || difficulty == 'medium' || difficulty == 'hard'){
+            if (difficulty == 'easy' || difficulty == 'medium' || difficulty == 'hard') {
                 pass = true;
             }
         }
-        
-        if(difficulty == 'easy'){
-            var ShootSpeed = 1000; 
-        } else if(difficulty == 'medium'){
+
+        if (difficulty == 'easy') {
+            var ShootSpeed = 1000;
+        } else if (difficulty == 'medium') {
             var ShootSpeed = 500;
-        } else{
+        } else {
             var ShootSpeed = 250;
         }
-        
+
 
         function makeEnemy() {
             const ENEMY_SIZE = 20;
@@ -127,7 +127,7 @@
                 colorRect(e.eXpos, e.eYpos, e.ENEMY_SIZE, e.ENEMY_SIZE, 'red'); //enemy
             });
         } // end func. makes enemy a rectangle
-        
+
 
         function enemyMove() {
             enemies.forEach(function(e, i, array) {
@@ -281,7 +281,7 @@
             }
             if (SpacekeyPressed) {
                 playerYpos -= playerYspeed;
-            } else {
+            } else if(playerYpos < canvas.height - PLAYER_SIZE){
                 playerYpos += playerYspeed;
             }
 
@@ -295,7 +295,7 @@
                     .ENEMY_SIZE > playerYpos && e.eYpos < playerYpos + PLAYER_SIZE) {
                     playerXpos = canvas.width / 2;
                     playerYpos = canvas.height / 2;
-                    life -= 1; 
+                    life -= 1;
                 };
 
 
@@ -305,17 +305,20 @@
                     playerXpos = canvas.width / 2;
                     playerYpos = canvas.height / 2;
                     life -= 1;
+                    eBullets = [];
                 }
             })
         }
-        
 
     </script>
-    
+
     <p id='lives'>
-    Lives:
+        Lives:
     </p>
     <p id='points'>
-    Score: 
+        Score:
+    </p>
+    <p>
+        'ad' to move left and right, space to go up. 'w' to shoot. go to the top of the screen when the enemies are dead.
     </p>
 </body>
