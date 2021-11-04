@@ -1,7 +1,7 @@
 <!doctype html>
 
 <body>
-    <canvas id="gameCanvas" width="600" height="600"></canvas>
+    <canvas id='gameCanvas' width='600' height='600'></canvas>
     <script>
         var canvas, canvasContext;
 
@@ -22,10 +22,12 @@
         var playerXspeed = 5;
         var playerYspeed = 4;
         const PLAYER_SIZE = 40;
-        var life = 3;
+        var life = 6;
         var userName = '';
         var difficulty = '';
-        
+        var score = 0;
+        var stage = 0;
+
 
         // keys
 
@@ -51,13 +53,14 @@
         var starting = true;
 
         function mainloop() {
-            document.getElementById('lives').innerHTML = "Lives: " + life;
-            if(life < 1){
-                alert("you failed lol u succ haha ahahh"); 
+            document.getElementById('points').innerHTML = 'Score: ' + score;
+            document.getElementById('lives').innerHTML = 'Lives: ' + life;
+            if (life < 1) {
+                alert('lol ' + userName + ' you succ hahahhahahha get gud. your score was ' + score);
                 location.reload();
                 life = 3;
             }
-            
+
             colorRect(0, 0, canvas.width, canvas.height, 'black'); //bg
             drawImg(player, playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE * 1.5); //player
 
@@ -70,35 +73,52 @@
             playerShoot();
             drawEBullet();
             eBulletMove();
+            nextStage();
 
             if (starting) {
-                for (var i = 0; i < 3; i++) {
+                playerYpos = canvas.height / 2;
+                playerXpos = canvas.width / 2;
+                for (var i = 0; i < 3 + stage; i++) {
                     makeEnemy();
                 }
                 starting = false;
             }
 
         } // end func
-        
-        while(userName == '' || userName == null){
+
+        while (userName == '' || userName == null) {
             userName = prompt('whats your name??????????')
         }
         pass = false;
-        while(pass == false){
+        while (pass == false) {
             difficulty = prompt('easy, medium or hard?', 'easy');
             difficulty = difficulty.toLowerCase()
-            if(difficulty == 'easy' || difficulty == 'medium' || difficulty == 'hard'){
+            if (difficulty == 'easy' || difficulty == 'medium' || difficulty == 'hard') {
                 pass = true;
             }
         }
-        
-        if(difficulty == 'easy'){
-            var ShootSpeed = 1000; 
-        } else if(difficulty == 'medium'){
+
+        if (difficulty == 'easy') {
+            var ShootSpeed = 1000;
+        } else if (difficulty == 'medium') {
+            var ShootSpeed = 750;
+            life = 4;
+        } else {
             var ShootSpeed = 500;
-        } else{
-            var ShootSpeed = 250;
+            life = 2;
         }
+
+        function nextStage() {
+            if (enemies.length < 1 && playerYpos < 0) {
+                console.log('asefae')
+                starting = true;
+                stage += 1;
+            }
+            if (stage > 7){
+                stage = 7;
+            }
+        }
+
 
         function makeEnemy() {
             const ENEMY_SIZE = 20;
@@ -124,7 +144,7 @@
                 colorRect(e.eXpos, e.eYpos, e.ENEMY_SIZE, e.ENEMY_SIZE, 'red'); //enemy
             });
         } // end func. makes enemy a rectangle
-        
+
 
         function enemyMove() {
             enemies.forEach(function(e, i, array) {
@@ -250,10 +270,12 @@
                         delete enemies[i];
                         delete bullets[i];
                         console.log('delete');
+                        score += 1;
                     }
 
                 });
                 bullets = bullets.filter(item => item !== undefined);
+                enemies = enemies.filter(item => item !== undefined);
             });
         }
 
@@ -277,7 +299,7 @@
             }
             if (SpacekeyPressed) {
                 playerYpos -= playerYspeed;
-            } else {
+            } else if (playerYpos < canvas.height - PLAYER_SIZE) {
                 playerYpos += playerYspeed;
             }
 
@@ -291,7 +313,7 @@
                     .ENEMY_SIZE > playerYpos && e.eYpos < playerYpos + PLAYER_SIZE) {
                     playerXpos = canvas.width / 2;
                     playerYpos = canvas.height / 2;
-                    life -= 1; 
+                    life -= 1;
                 };
 
 
@@ -301,14 +323,20 @@
                     playerXpos = canvas.width / 2;
                     playerYpos = canvas.height / 2;
                     life -= 1;
+                    eBullets = [];
                 }
             })
         }
-        
 
     </script>
-    
-    <p id="lives">
-    Lives:
+
+    <p id='lives'>
+        Lives:
+    </p>
+    <p id='points'>
+        Score:
+    </p>
+    <p>
+        'ad' to move left and right, space to go up. 'w' to shoot. go to the top of the screen when the enemies are dead.
     </p>
 </body>
