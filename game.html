@@ -13,9 +13,9 @@
             document.addEventListener('keyup', keyReleased)
 
             setInterval(mainloop, 1000 / 50);
-        }
+        } // end func.
 
-        // player
+        // player vars
 
         var playerXpos = 300;
         var playerYpos = 300;
@@ -23,6 +23,9 @@
         var playerYspeed = 4;
         const PLAYER_SIZE = 40;
         var life = 6;
+
+        //game vars
+
         var userName = '';
         var difficulty = '';
         var score = 0;
@@ -52,14 +55,14 @@
 
         var starting = true;
 
-        function mainloop() {
+        function mainloop() { //runs all functions inside contantly
             document.getElementById('points').innerHTML = 'Score: ' + score;
             document.getElementById('lives').innerHTML = 'Lives: ' + life;
             if (life < 1) {
                 alert('lol ' + userName + ' you succ hahahhahahha get gud. your score was ' + score);
                 location.reload();
                 life = 3;
-            }
+            } //end func.
 
             colorRect(0, 0, canvas.width, canvas.height, 'black'); //bg
             drawImg(player, playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE * 1.5); //player
@@ -90,7 +93,7 @@
             userName = prompt('whats your name??????????')
         }
         pass = false;
-        while (pass == false) {
+        while (pass == false) { //reprompts the use  until they type a valid difficulty
             difficulty = prompt('easy, medium or hard?', 'easy');
             difficulty = difficulty.toLowerCase()
             if (difficulty == 'easy' || difficulty == 'medium' || difficulty == 'hard') {
@@ -108,16 +111,16 @@
             life = 2;
         }
 
-        function nextStage() {
+        function nextStage() { //detects when the player touches the top after killing all enemies and respawns the enemies
             if (enemies.length < 1 && playerYpos < 0) {
                 console.log('asefae')
                 starting = true;
                 stage += 1;
             }
-            if (stage > 7){
+            if (stage > 7) {
                 stage = 7;
             }
-        }
+        } //end func.
 
 
         function makeEnemy() {
@@ -126,6 +129,7 @@
             var eYpos = 5;
             var eXspeed = 5;
             var eYspeed = 4;
+            //enemies variables
 
             var enemy = {
                 eXpos: eXpos,
@@ -139,14 +143,14 @@
 
         } // end func
 
-        function drawEnemy() {
+        function drawEnemy() { // makes enemy a rectangle
             enemies.forEach(function(e, i, array) {
                 colorRect(e.eXpos, e.eYpos, e.ENEMY_SIZE, e.ENEMY_SIZE, 'red'); //enemy
             });
-        } // end func. makes enemy a rectangle
+        } // end func.
 
 
-        function enemyMove() {
+        function enemyMove() { // enemy movement
             enemies.forEach(function(e, i, array) {
 
                 e.eXpos += e.eXspeed;
@@ -159,14 +163,13 @@
                 }
 
                 bullets.forEach(function(b, i, array) {
-                    //                    
                     if (b.bYpos + b.BULLET_SIZE < 0) {
                         delete enemies[i];
                     }
-                });
+                }); // end forEach.
                 bullets = bullets.filter(item => item !== undefined);
             });
-        } // end func. enemy movement
+        } // end func.
 
         // keypress movement
         function keyPressed(evt) {
@@ -201,15 +204,16 @@
 
         setInterval(function enemyShoot() {
             enemies.forEach(function(e, i, array) {
-                const eBULLET_SIZE = 10;
-                var ebXpos = e.eXpos + e.ENEMY_SIZE / 2 - eBULLET_SIZE / 2;
+                const EBULLET_SIZE = 10;
+                var ebXpos = e.eXpos + e.ENEMY_SIZE / 2 - EBULLET_SIZE / 2;
                 var ebYpos = e.eYpos;
                 var ebYspeed = 20;
+                //enemies bullet vars
 
                 var ebullet = {
                     ebXpos: ebXpos,
                     ebYpos: ebYpos,
-                    eBULLET_SIZE: eBULLET_SIZE,
+                    EBULLET_SIZE: EBULLET_SIZE,
                     ebYspeed: ebYspeed
                 }
                 eBullets.push(ebullet);
@@ -217,29 +221,29 @@
 
         }, ShootSpeed) // runs forEach every 1 second
 
-        function drawEBullet() {
+        function drawEBullet() { //makes enemy bullet a red square
             eBullets.forEach(function(b, i, array) {
-                colorRect(b.ebXpos, b.ebYpos, b.eBULLET_SIZE, b.eBULLET_SIZE, 'red')
+                colorRect(b.ebXpos, b.ebYpos, b.EBULLET_SIZE, b.EBULLET_SIZE, 'red')
             });
-        }
+        } //end func.
 
-        function eBulletMove() {
+        function eBulletMove() { //moves enemies bullets
             eBullets.forEach(function(b, i, array) {
                 b.ebYpos += b.ebYspeed;
-                if (b.ebYpos > canvas.height) {
+                if (b.ebYpos > canvas.height) { //enemy bullets die when they go off the bottom
                     delete eBullets[i];
                     eBullets = eBullets.filter(item => item !== undefined);
                 }
             })
-        }
+        } //end func.
 
         function playerShoot() {
-            if (shooting && bullets.length < 3) {
+            if (shooting && bullets.length < 3) { //lets players shoot while there is less than 3 bullets on the screen
                 const BULLET_SIZE = 10;
                 var bXpos = playerXpos + PLAYER_SIZE / 2 - BULLET_SIZE / 2;
                 var bYpos = playerYpos;
                 var bYspeed = 20;
-
+                //players bullets vars
                 var bullet = {
                     bXpos: bXpos,
                     bYpos: bYpos,
@@ -249,24 +253,23 @@
                 bullets.push(bullet); // pushes bullet into array with vars and consts set
                 shooting = false;
             }
-        }
+        } //end func
 
-        function drawBullet() {
+        function drawBullet() { //makes players bullets a white square
             bullets.forEach(function(b, i, array) {
                 colorRect(b.bXpos, b.bYpos, b.BULLET_SIZE, b.BULLET_SIZE, 'white')
             });
-        }
+        } //end func
 
         function bulletMove() {
             bullets.forEach(function(b, i, array) {
                 b.bYpos -= b.bYspeed;
 
-                if (b.bYpos < 0) {
+                if (b.bYpos < 0) { //deletes bullet when it goes off the top
                     delete bullets[i];
                 }
                 enemies.forEach(function(e, i, array) {
-
-                    if (b.bXpos + b.BULLET_SIZE > e.eXpos && b.bXpos < e.eXpos + e.ENEMY_SIZE && b.bYpos < e.eYpos + e.ENEMY_SIZE && b.bYpos + b.BULLET_SIZE > e.eYpos) {
+                    if (b.bXpos + b.BULLET_SIZE > e.eXpos && b.bXpos < e.eXpos + e.ENEMY_SIZE && b.bYpos < e.eYpos + e.ENEMY_SIZE && b.bYpos + b.BULLET_SIZE > e.eYpos) { //detects if players bullet is inside the enemy and deletes both
                         delete enemies[i];
                         delete bullets[i];
                         console.log('delete');
@@ -277,17 +280,17 @@
                 bullets = bullets.filter(item => item !== undefined);
                 enemies = enemies.filter(item => item !== undefined);
             });
-        }
+        } //end func 
 
-        // draws rectangles
-        function colorRect(x, y, w, h, c) {
+
+        function colorRect(x, y, w, h, c) { // draws rectangles
             canvasContext.fillStyle = c;
             canvasContext.fillRect(x, y, w, h);
-        }
-        // draws images
-        function drawImg(src, x, y, w, h) {
+        } // end func
+
+        function drawImg(src, x, y, w, h) { //draws images
             canvasContext.drawImage(src, x, y, w, h);
-        }
+        } //end func
 
         // player movement
         function playerMove() {
@@ -305,10 +308,11 @@
 
 
 
-        }
+        } //end func
+
         // player vs enemy hit detection
         function hit() {
-            enemies.forEach(function(e, i, array) {
+            enemies.forEach(function(e, i, array) { //detects if player is touching enemy and reduces life by 1 if true
                 if (e.eXpos + e.ENEMY_SIZE > playerXpos && e.eXpos < playerXpos + PLAYER_SIZE && e.eYpos + e
                     .ENEMY_SIZE > playerYpos && e.eYpos < playerYpos + PLAYER_SIZE) {
                     playerXpos = canvas.width / 2;
@@ -318,15 +322,15 @@
 
 
             });
-            eBullets.forEach(function(b, i, array) {
-                if (b.ebXpos + b.eBULLET_SIZE > playerXpos && b.ebXpos < playerXpos + PLAYER_SIZE && b.ebYpos + b.eBULLET_SIZE > playerYpos && b.ebYpos < playerYpos + PLAYER_SIZE) {
+            eBullets.forEach(function(b, i, array) { //detects if the player is touching an enemy bullet and reduces life and deletes all bullets
+                if (b.ebXpos + b.EBULLET_SIZE > playerXpos && b.ebXpos < playerXpos + PLAYER_SIZE && b.ebYpos + b.EBULLET_SIZE > playerYpos && b.ebYpos < playerYpos + PLAYER_SIZE) {
                     playerXpos = canvas.width / 2;
                     playerYpos = canvas.height / 2;
                     life -= 1;
                     eBullets = [];
                 }
             })
-        }
+        } //end func
 
     </script>
 
